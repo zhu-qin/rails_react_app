@@ -36,7 +36,7 @@ function NewPostForm() {
             <h1>New Post Form Temp</h1>
             <form onSubmit={handleSubmit}>
                 <div>
-                <label htemlForm="titleInput">Title:</label>
+                <label htmlform="titleInput">Title:</label>
                 <input
                     id="titleInput"
                     type="text"

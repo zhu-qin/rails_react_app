@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 
 function PostsList() {
     const [posts, setPosts] = useState([]);
-    const [, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [, setError] = useState(null)
     // Fetch posts from the API
         useEffect(() => {
@@ -29,6 +29,22 @@ function PostsList() {
             loadPosts()
         }, [])
 
+    // Delete Post
+    const deletePost = async (id) => {
+        try {
+            // Delete request to http://localhost:3000/api/v1/posts/:id
+            const response = await fetch(`${API_URL}/${id}`, {
+                method: "DELETE",
+            });
+            if (response.ok) {
+                setPosts(posts.filter((post) => post.id !== id));
+            } else {
+                throw response;
+            }
+        } catch (e) {
+            console.error(e)
+        }
+    }
 
     return (
         <div>
@@ -39,7 +55,12 @@ function PostsList() {
                         {post.title}
                         </Link>  
                     </h2>
-                    <p>{post.body}</p>
+                    <div className="post-links"> 
+                        <button onClick={() => deletePost(post.id)}>Delete</button>
+                    </div>
+                     <Link to={`/posts/${post.id}/edit`} className="post-title">
+                        Edit
+                    </Link>  
                 </div>
             ))}
         </div>
