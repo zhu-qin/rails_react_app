@@ -1,7 +1,8 @@
 //API_URL comes from the .env.development file
 import React, { useState, useEffect } from 'react';
-import { API_URL } from '../../constants.js';
 import {Link} from 'react-router-dom';
+import { API_URL } from '../../constants.js';
+import {fetchAllPosts, deletePost as deletePostById } from '../../services/postService.js';
 
 function PostsList() {
     const [posts, setPosts] = useState([]);
@@ -11,20 +12,13 @@ function PostsList() {
         useEffect(() => {
             async function loadPosts() {
               try {
-                    const response = await fetch(API_URL);
-                    if (response.ok) {
-                        const json = await response.json();
-                        setPosts(json);
-                    } else {
-                        throw response;
-                    }
+                    const data = await fetchAllPosts();
+                    setPosts(data);
+                    setLoading(false);
                 } catch(e) {
-                    setError("An error occurred.");
-                    console.log("An error occurred:", e);
-                } finally {
+                    setError(e);
                     setLoading(false)
-                }
-                
+                } 
             }
             loadPosts()
         }, [])
@@ -32,17 +26,10 @@ function PostsList() {
     // Delete Post
     const deletePost = async (id) => {
         try {
-            // Delete request to http://localhost:3000/api/v1/posts/:id
-            const response = await fetch(`${API_URL}/${id}`, {
-                method: "DELETE",
-            });
-            if (response.ok) {
-                setPosts(posts.filter((post) => post.id !== id));
-            } else {
-                throw response;
-            }
+         await deletePostById(id);
+         setPosts(posts.filter((post) => post.id !== id));
         } catch (e) {
-            console.error(e)
+            console.error("Failed to delete the post: ", e);
         }
     }
 
