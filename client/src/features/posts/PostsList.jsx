@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import {Link} from 'react-router-dom';
 import { API_URL } from '../../constants.js';
-import {fetchAllPosts, deletePost as deletePostById } from '../../services/postService.js';
+import {fetchAllPosts, deletePost } from '../../services/postService.js';
 
 function PostsList() {
     const [posts, setPosts] = useState([]);
@@ -24,9 +24,9 @@ function PostsList() {
         }, [])
 
     // Delete Post
-    const deletePost = async (id) => {
+    const deletePostHandler = async (id) => {
         try {
-         await deletePostById(id);
+         await deletePost(id);
          setPosts(posts.filter((post) => post.id !== id));
         } catch (e) {
             console.error("Failed to delete the post: ", e);
@@ -47,7 +47,7 @@ function PostsList() {
                         Edit
                     </Link>
                     {" | "}  
-                        <button onClick={() => deletePost(post.id)}>Delete</button>
+                        <button onClick={() => deletePostHandler(post.id)}>Delete</button>
                     </div>
                 </div>
             ))}

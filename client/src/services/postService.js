@@ -36,5 +36,33 @@ async function deletePost(id) {
     // }
 }
 
+async function createPost(postData) {
+    const response = await fetch(`${API_URL}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData)
+    })
 
-export {fetchAllPosts, deletePost, fetchPost};
+    if (!response.ok) {
+        throw new Error(response.statusText);
+    }
+    return response.json()
+}
+
+async function updatePost(id, postData) {
+    const response = await fetch(`${API_URL}/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
+    });
+    if (!response.ok) {
+        throw new Error(response.statusText);
+    }
+    return response.json();
+}
+
+export { updatePost, createPost, fetchAllPosts, deletePost, fetchPost};
