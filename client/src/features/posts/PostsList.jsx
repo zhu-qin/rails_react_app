@@ -56,11 +56,12 @@ function PostsList() {
                         </Link>  
                     </h2>
                     <div className="post-links"> 
-                        <button onClick={() => deletePost(post.id)}>Delete</button>
-                    </div>
                      <Link to={`/posts/${post.id}/edit`} className="post-title">
                         Edit
-                    </Link>  
+                    </Link>
+                    {" | "}  
+                        <button onClick={() => deletePost(post.id)}>Delete</button>
+                    </div>
                 </div>
             ))}
         </div>
